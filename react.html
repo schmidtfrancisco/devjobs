@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <title>DevJobs - Empleos</title>
+  <meta charset="UTF-8">
+  <meta name="description" content="Busca las mejores ofertas de trabajo para desarrolladores en DevJobs.">
+
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./main.js"></script>
+
+  <script type="module">
+    import React from "https://esm.sh/react?dev"
+    import ReactDOM from "https://esm.sh/react-dom/client?dev"
+
+    const titulo = React.createElement(
+      "h1",
+      { style: { color: "#09f" } },
+      "Hola React"
+    )
+
+    const rootEl = document.querySelector('#react-root');
+    const root = ReactDOM.createRoot(rootEl);
+    root.render(titulo);
+  </script>
+</head>
+
+<body>
+  <header class="navbar">
+    <h1>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-code">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M7 8l-4 4l4 4" />
+        <path d="M17 8l4 4l-4 4" />
+        <path d="M14 4l-4 16" />
+      </svg>
+      DevJobs
+    </h1>
+    <nav>
+      <a href="/">Inicio</a>
+      <a href="empleos.html">Empleos</a>
+    </nav>
+    <div>
+      <devjobs-avatar service="x" username="midudev" size="32"></devjobs-avatar>
+    </div>
+  </header>
+
+  <main class="search-main">
+    <section class="search-section">
+      <h1>React.js primeros</h1>
+      <div id="react-root"></div>
+      
+    </section>
+    
+    <nav class="pagination">
+      
+    </nav>
+  </main>
+  <footer class="global-footer">
+    <small>&copy; 2026 DevJobs. Todos los derechos reservados.</small>
+  </footer>
+
+ 
+</body>
+
+</html>
