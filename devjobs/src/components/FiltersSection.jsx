@@ -1,7 +1,7 @@
-function FiltersSection() {
+export function FiltersSection() {
   return (
     <footer className="search-filters">
-      <label for="technology-filter" hidden aria-hidden="true">Tecnología</label>
+      <label htmlFor="technology-filter" hidden aria-hidden="true">Tecnología</label>
       <select id="technology-filter" name="technology">
         <option value="all">Tecnología</option>
         <option value="javascript">JavaScript</option>
@@ -10,7 +10,7 @@ function FiltersSection() {
         <option value="kotlin">Kotlin</option>
         <option value="aws">AWS</option>
       </select>
-      <label for="location-filter" hidden aria-hidden="true">Ubicación</label>
+      <label htmlFor="location-filter" hidden aria-hidden="true">Ubicación</label>
       <select id="location-filter" name="location">
         <option value="all">Ubicación</option>
         <option value="bsas">Buenos Aires</option>
@@ -25,7 +25,7 @@ function FiltersSection() {
         <option value="monterrey">Monterrey</option>
         <option value="remoto">Remoto</option>
       </select>
-      <label for="experience-filter" hidden aria-hidden="true">Experiencia</label>
+      <label htmlFor="experience-filter" hidden aria-hidden="true">Experiencia</label>
       <select id="experience-filter" name="experience">
         <option value="all">Experiencia</option>
         <option value="junior">Junior</option>
@@ -35,5 +35,3 @@ function FiltersSection() {
     </footer>
   )
 }
-
-export default FiltersSection;

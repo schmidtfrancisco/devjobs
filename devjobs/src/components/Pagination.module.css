@@ -1,0 +1,39 @@
+.pagination {
+  margin-block: 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+
+  a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 2.5rem;
+    width: 2.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    transition: color 0.2s;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      outline: none;
+      background: #fff;
+      color: var(--primary-dark);
+    }
+
+    &:disabled {
+      opacity: .5;
+      pointer-events: none;
+    }
+  }
+}
+
+.isActive {
+  background-color: var(--primary-light);
+  color: white;
+  pointer-events: none;
+}

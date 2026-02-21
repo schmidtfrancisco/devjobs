@@ -1,20 +1,24 @@
-import data from './data.json'
-import JobCard from "./components/JobCard"
 
-function JobList() {
+import { JobCard } from "./JobCard"
+
+export function JobList({ jobs }) {
   return (
     <section className="search-results">
       <header>
         <h2>Resultados de búsqueda</h2>
       </header>
-      <footer className="results-list">
-        {data.map((job) =>
-          <JobCard id={job.id} job={job} />
-        )}
-      </footer>
-      <p className="results-number"></p>
+      {jobs.length === 0 ? (
+        <p className="no-results">No se encontraron resultados para tu búsqueda.</p>
+      ) : (
+        <>
+          <footer className="results-list">
+            {jobs.map((job) =>
+              <JobCard key={job.id} job={job} />
+            )}
+          </footer>
+          
+        </>
+      )}
     </section>
   )
 }
-
-export default JobList;

@@ -402,11 +402,14 @@ h1+p {
     padding: 0;
   }
 
-  &>p {
-    margin-top: .5rem;
-    color: var(--text-secondary);
-    font-size: .9rem;
-  }
+
+}
+
+.results-number {
+  text-align: center;
+  margin-top: .5rem;
+  color: var(--text-secondary);
+  font-size: .9rem;
 }
 
 .result-card {
@@ -467,7 +470,7 @@ h1+p {
 
 .breadcrumb {
   font-size: 0.8rem;
-  
+
   a {
     text-decoration: none;
     color: var(--text-muted);
@@ -509,7 +512,7 @@ h1+p {
 .job-details footer {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;  
+  gap: 1.5rem;
   margin-bottom: 2rem;
 
   article {
@@ -539,7 +542,7 @@ h1+p {
     display: flex;
     gap: 1rem;
     align-items: center;
-    
+
     svg {
       color: #0d5ba8;
       flex-shrink: 0;
@@ -556,44 +559,7 @@ h1+p {
   }
 }
 
-.pagination {
-  margin-block: 2rem;
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
 
-  button {
-    background: var(--primary-dark);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 2.5rem;
-    width: 2.5rem;
-    border: none;
-    border-radius: 0.5rem;
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    transition: color 0.2s;
-    cursor: pointer;
-
-    &:hover,
-    &:focus {
-      outline: none;
-      background: #fff;
-      color: var(--primary-dark);
-    }
-
-    &.is-active {
-      background: var(--primary-light);
-      pointer-events: none;
-    }
-
-    &:disabled {
-      opacity: .5;
-      pointer-events: none;
-    }
-  }
-}
 
 /* Footer */
 .global-footer {

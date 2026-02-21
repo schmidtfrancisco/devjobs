@@ -1,4 +1,4 @@
-function Header() {
+export function Header() {
   return (
     <header className="navbar">
       <h1>
@@ -23,5 +23,3 @@ function Header() {
     </header>
   )
 }
-
-export default Header
