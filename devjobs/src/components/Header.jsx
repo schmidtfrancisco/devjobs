@@ -1,3 +1,5 @@
+import { Link } from "./Link";
+
 export function Header() {
   return (
     <header className="navbar">
@@ -13,8 +15,8 @@ export function Header() {
         DevJobs
       </h1>
       <nav>
-        <a href="/">Inicio</a>
-        <a href="/">Empleos</a>
+        <Link href="/">Inicio</Link>
+        <Link href="/search">Empleos</Link>
       </nav>
       <div>
         {//<devjobs-avatar service="x" username="midudev" size="32"></devjobs-avatar>
