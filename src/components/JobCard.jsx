@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "./Link";
 
 export function JobCard({ job }) {
   const { data, titulo, empresa, ubicacion, descripcion } = job;
@@ -18,10 +19,21 @@ export function JobCard({ job }) {
       data-location={data?.modalidad}
       data-experience={data?.nivel}
     >
-      <h3>{titulo}</h3>
+      <h3>
+        <Link href={`/jobs/${job.id}`} className='card-title-link' >
+          {titulo}
+        </Link>
+      </h3>
       <h4>{empresa} | {ubicacion}</h4>
       <p>{descripcion}</p>
-      <button className={buttonClasses} onClick={handleApplyClick}>{buttonText}</button>
+      <div className="card-buttons">
+        <Link href={`/jobs/${job.id}`} className="button primary-button view-details-button">
+          Ver detalles
+        </Link> 
+        <button className={buttonClasses} onClick={handleApplyClick}>
+          {buttonText}
+        </button>
+      </div>
     </article>
   )
 }

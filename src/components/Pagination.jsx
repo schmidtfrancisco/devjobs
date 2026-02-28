@@ -28,10 +28,18 @@ export function Pagination({ currentPage = 1, totalPages = 10, onPageChange }) {
       onPageChange(page)
   }
 
+  const buildPageUrl = (page) => {
+    const url = new URL(window.location.href)
+    const searchParams = url.searchParams
+    searchParams.set('page', String(page))
+    url.search = searchParams.toString()
+    return `${url.pathname}?${url.searchParams.toString()}`
+  }
+
   return (
     <nav className={styles.pagination}>
 
-      <a style={stylePrevButton} onClick={handlePrevClick}>
+      <a href={buildPageUrl(currentPage - 1)} style={stylePrevButton} onClick={handlePrevClick}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
           strokeLinecap="round" strokeLinejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -41,14 +49,14 @@ export function Pagination({ currentPage = 1, totalPages = 10, onPageChange }) {
       {pages.map(page =>
         <a
           key={page}
-          href="#"
+          href={buildPageUrl(page)}
           onClick={(event) => handlePageChange(event, page)}
           className={currentPage === page ? styles.isActive : '' }
         >
           {page}
         </a>
       )}
-      <a style={styleNextButton} onClick={handleNextClick}>
+      <a href={buildPageUrl(currentPage + 1)} style={styleNextButton} onClick={handleNextClick}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"
           strokeLinecap="round" strokeLinejoin="round"
           className="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right">

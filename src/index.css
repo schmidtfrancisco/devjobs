@@ -110,6 +110,13 @@ h1+p {
   /* TODO */
 }
 
+.nav-link-active {
+  color: var(--text-muted);
+  pointer-events: none;
+  opacity: .5;
+  user-select: none;
+}
+
 /* Hero */
 .hero {
   height: 500px;
@@ -279,6 +286,8 @@ h1+p {
 .search-main {
   flex: 1;
   padding: 2rem 1rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
   max-width: 1024px;
   margin: 0 auto;
   width: 100%;
@@ -429,7 +438,7 @@ h1+p {
   grid-template-columns: 1fr 80px;
   grid-template-rows: auto auto auto;
   grid-template-areas:
-    "title button"
+    "title buttons"
     "subtitle ."
     "description .";
   justify-items: start;
@@ -439,7 +448,16 @@ h1+p {
 
   h3 {
     grid-area: title;
-    font-size: 1rem;
+
+    .card-title-link {
+      text-decoration: none;
+      font-size: 1rem;
+      color: var(--text-primary);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
   h4 {
@@ -456,9 +474,21 @@ h1+p {
     text-align: left;
   }
 
-  button {
-    grid-area: button;
+  .card-buttons {
+    display: flex;
+    gap: 1rem;
+    grid-area: buttons;
     justify-self: end;
+  }
+
+  .view-details-button {
+    text-decoration: none;
+    font-size: .9rem;
+    padding: 8px 16px;
+
+  }
+
+  button {
     background-color: var(--primary-light);
   }
 
@@ -543,26 +573,28 @@ h1+p {
     font-weight: 600;
   }
 
-  p {
+  div {
     color: var(--text-secondary);
     font-size: .9rem;
   }
 
-  li {
+  ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  ul li {
+    position: relative;
+    padding-left: 1.5rem;
     margin-block: .5rem;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
+  }
 
-    svg {
-      color: #0d5ba8;
-      flex-shrink: 0;
-    }
-
-    span {
-      color: var(--text-secondary);
-      font-size: .9rem;
-    }
+  ul li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--primary-light);
+    font-weight: bold;
   }
 
   button {
@@ -830,4 +862,35 @@ textarea {
 .dropzone.dragover {
   border-color: #3b82f6;
   background-color: #13263d;
+}
+
+.loading-section {
+  display: flex;
+  gap: 1rem;
+  padding: 4rem;
+  margin-inline: auto;
+}
+
+.spinner {
+  border-radius: 50%;
+  border: 2px solid var(--text-secondary);
+  border-top: 2px solid var(--background);
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-fallback {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+  color: var(--text-secondary);
 }

@@ -1,7 +1,7 @@
 import { Link } from "../components/Link"
 import { ProfileForm } from "../components/ProfileForm"
 
-export function ProfilePage() {
+export default function ProfilePage() {
   return (
     <main className="profile-page">
       <aside className="profile-sidebar">

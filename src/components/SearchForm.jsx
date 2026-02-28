@@ -1,51 +1,40 @@
-import { useId, useState } from "react"
+import { useId, useRef, useState } from "react"
 
-const useSearchForm = ( { idText, idTechnology, idLocation, idExperienceLevel, onSearch }) => {
-  const [searchText, setSearchText] = useState('')
-  
-  const handleFormChange = (event) => {
-    event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const filters = {
-      search: formData.get(idText),
-      technology: formData.get(idTechnology),
-      location: formData.get(idLocation),
-      experienceLevel: formData.get(idExperienceLevel)
-    }
-    setSearchText(filters.search)
-    onSearch(filters)
-  }
-
-  const handleReset = () => {
-    const filters = {
-      search: '',
-      technology: 'all',
-      location: 'all',
-      experienceLevel: 'all'
-    }
-    setSearchText(filters.search)
-    onSearch(filters)
-  }
-
-  return {
-    searchText,
-    handleFormChange,
-    handleReset
-  }
-}
-
-export function SearchForm({ onSearch }) {
+export function SearchForm({ initialText, onSearch, onFiltersChange, activeFilters, onFiltersReset }) {
   const idText = useId()
   const idTechnology = useId()
   const idLocation = useId()
   const idExperienceLevel = useId()
+  const timeoutId = useRef(null)
+  const formRef = useRef()
   const [focusedField, setFocusField] = useState(null)
-  const { handleFormChange, handleReset } = useSearchForm(
-    { idText, idTechnology, idLocation, idExperienceLevel, onSearch}
-  )
-  
+
+  const handleFiltersChange = (event) => {
+    event.preventDefault()
+    const formData = new FormData(formRef.current)
+    const filters = {
+      technology: formData.get(idTechnology),
+      location: formData.get(idLocation),
+      experienceLevel: formData.get(idExperienceLevel)
+    }
+    onFiltersChange(filters)
+  }
+
+  const handleSearchChange = (event) => {
+    event.preventDefault()
+    const text = event.target.value
+
+    if (timeoutId.current) {
+      clearTimeout(timeoutId.current)
+    }
+    timeoutId.current = setTimeout(() => {
+      onSearch(text)
+    }, 500)
+    
+  }
+
   return (
-    <form onChange={handleFormChange} role="search">
+    <form role="search" ref={formRef}>
       <div className={(focusedField === 'search') ? 'search-bar focused-field' : 'search-bar'}>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
           stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"
@@ -56,6 +45,8 @@ export function SearchForm({ onSearch }) {
         </svg>
         <input
           name={idText}
+          defaultValue={initialText}
+          onChange={handleSearchChange}
           onFocus={() => setFocusField('search')}
           onBlur={() => setFocusField(null)}
           id="job-search" type="text"
@@ -70,10 +61,11 @@ export function SearchForm({ onSearch }) {
         <select
           id="technology-filter"
           name={idTechnology}
+          onChange={handleFiltersChange}
           onFocus={() => setFocusField('technology-filter')}
           onBlur={() => setFocusField(null)}
         >
-          <option value="all">Tecnología</option>
+          <option value=''>Tecnología</option>
           <option value="javascript">JavaScript</option>
           <option value="python">Python</option>
           <option value="java">Java</option>
@@ -84,11 +76,12 @@ export function SearchForm({ onSearch }) {
         <select
           id="location-filter"
           name={idLocation}
+          onChange={handleFiltersChange}
           onFocus={() => setFocusField('location-filter')}
           onBlur={() => setFocusField(null)}
           className={(focusedField === 'location-filter') ? 'focused-field' : ''}
         >
-          <option value="all">Ubicación</option>
+          <option value=''>Ubicación</option>
           <option value="bsas">Buenos Aires</option>
           <option value="barcelona">Barcelona</option>
           <option value="cdmx">Ciudad de México</option>
@@ -102,19 +95,25 @@ export function SearchForm({ onSearch }) {
           <option value="remoto">Remoto</option>
         </select>
         <label htmlFor="experience-filter" hidden aria-hidden="true">Experiencia</label>
-        <select 
-          id="experience-filter" 
+        <select
+          id="experience-filter"
           name={idExperienceLevel}
-          onFocus={() => setFocusField('experience-filter')} 
+          onChange={handleFiltersChange}
+          onFocus={() => setFocusField('experience-filter')}
           onBlur={() => setFocusField(null)}
           className={(focusedField === 'experience-filter') ? 'focused-field' : ''}
         >
-          <option value="all">Experiencia</option>
+          <option value=''>Experiencia</option>
           <option value="junior">Junior</option>
           <option value="mid">Mid</option>
           <option value="senior">Senior</option>
         </select>
-        <button className='button' type="reset" onClick={handleReset}>Limpiar filtros</button>
+        {
+          activeFilters &&
+          <button className='button' type="reset" onClick={onFiltersReset}>
+            Limpiar filtros
+          </button>
+        }
       </footer>
     </form>
   )
