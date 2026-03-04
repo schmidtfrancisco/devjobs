@@ -1,6 +1,6 @@
 import { useId, useRef, useState } from "react"
 
-export function SearchForm({ initialText, onSearch, onFiltersChange, activeFilters, onFiltersReset }) {
+export function SearchForm({ initialText, filters, onSearch, onFiltersChange, activeFilters, onFiltersReset }) {
   const idText = useId()
   const idTechnology = useId()
   const idLocation = useId()
@@ -18,6 +18,12 @@ export function SearchForm({ initialText, onSearch, onFiltersChange, activeFilte
       experienceLevel: formData.get(idExperienceLevel)
     }
     onFiltersChange(filters)
+  }
+
+  const handleFiltersReset = (event) => {
+    event.preventDefault()
+    formRef.current.reset()
+    onFiltersReset()
   }
 
   const handleSearchChange = (event) => {
@@ -61,6 +67,7 @@ export function SearchForm({ initialText, onSearch, onFiltersChange, activeFilte
         <select
           id="technology-filter"
           name={idTechnology}
+          value={filters?.technology || ''}
           onChange={handleFiltersChange}
           onFocus={() => setFocusField('technology-filter')}
           onBlur={() => setFocusField(null)}
@@ -76,6 +83,7 @@ export function SearchForm({ initialText, onSearch, onFiltersChange, activeFilte
         <select
           id="location-filter"
           name={idLocation}
+          value={filters?.location || ''}
           onChange={handleFiltersChange}
           onFocus={() => setFocusField('location-filter')}
           onBlur={() => setFocusField(null)}
@@ -98,6 +106,7 @@ export function SearchForm({ initialText, onSearch, onFiltersChange, activeFilte
         <select
           id="experience-filter"
           name={idExperienceLevel}
+          value={filters?.experienceLevel || ''}
           onChange={handleFiltersChange}
           onFocus={() => setFocusField('experience-filter')}
           onBlur={() => setFocusField(null)}
@@ -110,7 +119,7 @@ export function SearchForm({ initialText, onSearch, onFiltersChange, activeFilte
         </select>
         {
           activeFilters &&
-          <button className='button' type="reset" onClick={onFiltersReset}>
+          <button className='button' type="reset" onClick={handleFiltersReset}>
             Limpiar filtros
           </button>
         }

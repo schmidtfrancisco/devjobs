@@ -3,15 +3,30 @@ import { useParams, useNavigate } from "react-router"
 import { Spinner } from "../components/Spinner"
 import { Link } from "../components/Link"
 import snarkdown from 'snarkdown'
+import { useAuthStore } from "../store/authStore"
+import { useFavoritesStore } from "../store/favoritesStore"
 
-function JobSection({title, content, className}) {
+function JobSection({ title, content, className }) {
   const html = snarkdown(content)
 
   return (
     <article className={className}>
       <h2>{title}</h2>
-      <div dangerouslySetInnerHTML={{__html: html}} />
+      <div dangerouslySetInnerHTML={{ __html: html }} />
     </article>
+  )
+}
+
+function DetailFavoriteButton({ jobId }) {
+  const { isFavorite, toggleFavorite } = useFavoritesStore()
+
+  return (
+    <button className='button primary-button' onClick={() => toggleFavorite(jobId)}>
+      {isFavorite(jobId)
+        ? '⭐'
+        : <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-star"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873l-6.158 -3.245" /></svg>
+      }
+    </button>
   )
 }
 
@@ -21,12 +36,13 @@ export default function JobDetail() {
   const [job, setJob] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const { isLoggedIn } = useAuthStore()
 
   useEffect(() => {
     if (!id) return
 
     const controller = new AbortController()
-    
+
     fetch(`https://jscamp-api.vercel.app/api/jobs/${id}`, {
       signal: controller.signal,
     })
@@ -45,7 +61,7 @@ export default function JobDetail() {
       .finally(() => {
         setLoading(false)
       })
-    
+
     return () => {
       controller.abort()
     }
@@ -76,7 +92,7 @@ export default function JobDetail() {
     <main className="details-main">
       <nav className="breadcrumb">
         <Link
-          href="/empleos">
+          href="/search">
           Empleos /
         </Link>
         <span>{job.titulo}</span>
@@ -87,30 +103,36 @@ export default function JobDetail() {
             <h1>{job.titulo}</h1>
             <p>{job.empresa} - {job.ubicacion}</p>
           </div>
-          <button className="button secondary-button">Aplicar ahora</button>
+          <DetailFavoriteButton jobId={id} />
+          <button disabled={!isLoggedIn} className="button secondary-button">
+            {isLoggedIn ? 'Aplicar ahora' : 'Inicia sesión para aplicar'}
+          </button>
+          
         </header>
         <footer>
-          <JobSection 
-            title='Descripción del puesto' 
-            content={job.content.description} 
-            className='job-description' 
+          <JobSection
+            title='Descripción del puesto'
+            content={job.content.description}
+            className='job-description'
           />
-          <JobSection 
-            title='Responsabilidades' 
-            content={job.content.responsibilities} 
-            className='job-responsabilities' 
+          <JobSection
+            title='Responsabilidades'
+            content={job.content.responsibilities}
+            className='job-responsabilities'
           />
-          <JobSection 
-            title='Requisitos' 
-            content={job.content.requirements} 
-            className='job-requirements' 
+          <JobSection
+            title='Requisitos'
+            content={job.content.requirements}
+            className='job-requirements'
           />
-          <JobSection 
-            title='Acerca de la empresa' 
-            content={job.content.about} 
-            className='company-info' 
+          <JobSection
+            title='Acerca de la empresa'
+            content={job.content.about}
+            className='company-info'
           />
-          <button className="button secondary-button">Aplicar ahora</button>
+          <button disabled={!isLoggedIn} className="button secondary-button">
+            {isLoggedIn ? 'Aplicar ahora' : 'Inicia sesión para aplicar'}
+          </button>
         </footer>
       </section>
     </main>

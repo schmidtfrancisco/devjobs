@@ -18,9 +18,14 @@ const useFilters = () => {
     }
   })
   const [currentPage, setCurrentPage] = useState(() => {
-    const params = new URLSearchParams(window.location.search)
-    const page = Number(params.get('page'))
-    return Number.isNaN(page) ? page : 1
+    const pageString = searchParams.get('page')
+    const page = Number(pageString)
+
+    if (!pageString || Number.isNaN(page) || page < 1) {
+      return 1
+    }
+
+    return page
   })
   const [jobs, setJobs] = useState([])
   const [total, setTotal] = useState(0)
@@ -70,7 +75,7 @@ const useFilters = () => {
       else params.delete('level')
 
       if (currentPage > 1) params.set('page', currentPage)
-      else params.delete('page ')
+      else params.delete('page')
 
       return params
     })
@@ -113,6 +118,7 @@ const useFilters = () => {
     loading,
     activeFilters,
     searchText,
+    filters,
     handleSearch,
     handleFiltersChange,
     handlePageChange,
@@ -129,6 +135,7 @@ export default function SearchPage() {
     loading,
     activeFilters,
     searchText,
+    filters,
     handleSearch,
     handleFiltersChange,
     handlePageChange,
@@ -145,6 +152,7 @@ export default function SearchPage() {
         <p>Explora miles de oportunidades en el sector tecnológico.</p>
         <SearchForm
           initialText={searchText}
+          filters={filters}
           onSearch={handleSearch}
           onFiltersChange={handleFiltersChange}
           activeFilters={activeFilters}
