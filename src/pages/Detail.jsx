@@ -5,6 +5,10 @@ import { Link } from "../components/Link"
 import snarkdown from 'snarkdown'
 import { useAuthStore } from "../store/authStore"
 import { useFavoritesStore } from "../store/favoritesStore"
+import { useAISummary } from "../hooks/useAISummary"
+import { Streamdown, Stremdown } from 'streamdown'
+
+const API_URL = import.meta.env.VITE_API_URL
 
 function JobSection({ title, content, className }) {
   const html = snarkdown(content)
@@ -30,6 +34,34 @@ function DetailFavoriteButton({ jobId }) {
   )
 }
 
+function AISummary({ jobId }) {
+  const { summary, loading, generateSummary} = useAISummary(jobId)
+
+  if (summary) {
+
+    return (
+      <article>
+        <Streamdown 
+          isAnimating={loading}
+        >
+          {summary}
+        </Streamdown>
+      </article>
+    )
+  }
+
+  return (
+    <button
+      className="button primary-button"
+      onClick={generateSummary}
+      disabled={loading}
+    >
+      {loading ? 'Generando resumen...' : '✨Generar resumen con IA'}
+    </button>
+  )
+
+}
+
 export default function JobDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -41,20 +73,17 @@ export default function JobDetail() {
   useEffect(() => {
     if (!id) return
 
-    const controller = new AbortController()
-
-    fetch(`https://jscamp-api.vercel.app/api/jobs/${id}`, {
-      signal: controller.signal,
-    })
+    fetch(`${API_URL}/jobs/${id}`)
       .then(res => {
-        if (!res.ok) throw new Error('Job not found')
+        if (!res.ok) {
+          navigate('/not-found')
+        }
         return res.json()
       })
       .then(json => {
         setJob(json)
       })
       .catch(err => {
-        if (err.name === 'AbortError') return
         setError(err.message)
         setJob(null)
       })
@@ -62,19 +91,18 @@ export default function JobDetail() {
         setLoading(false)
       })
 
-    return () => {
-      controller.abort()
-    }
-  }, [id])
+  }, [id, navigate])
 
   if (loading) {
-    <div className="loading-section">
-      <p>Cargando empleo...</p>
-      <Spinner />
-    </div>
+    return (
+      <div className="loading-section">
+        <p>Cargando empleo...</p>
+        <Spinner />
+      </div>
+    )
   }
 
-  if (error || !job) {
+  if (error) {
     return (
       <div>
         <h2>Oferta no encontrada</h2>
@@ -107,8 +135,9 @@ export default function JobDetail() {
           <button disabled={!isLoggedIn} className="button secondary-button">
             {isLoggedIn ? 'Aplicar ahora' : 'Inicia sesión para aplicar'}
           </button>
-          
+
         </header>
+        <AISummary jobId={job.id} />
         <footer>
           <JobSection
             title='Descripción del puesto'

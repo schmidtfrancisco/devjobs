@@ -33,7 +33,7 @@ export default function HomePage() {
               <path d="M3 10a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
               <path d="M21 21l-6 -6" />
             </svg>
-            <input type="text" name="search" required placeholder="Buscar ofertas de trabajo..." />
+            <input type="search" name="search" required placeholder="Buscar ofertas de trabajo..." />
             <button className="button primary-button" type="submit">Buscar</button>
           </div>
         </form>

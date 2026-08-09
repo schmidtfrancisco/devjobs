@@ -48,7 +48,7 @@ const useFilters = () => {
         params.append('offset', offset)
         const queryParams = params.toString()
 
-        const response = await fetch(`https://jscamp-api.vercel.app/api/jobs?${queryParams}`)
+        const response = await fetch(`https://devjobs-api-nu.vercel.app/jobs?${queryParams}`)
         const json = await response.json()
 
         setJobs(json.data)
